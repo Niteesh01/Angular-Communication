@@ -9,15 +9,28 @@ import { ProductService } from './product.service';
 })
 export class ProductListComponent implements OnInit {
     pageTitle: string = 'Product List';
-    listFilter: string;
+
     showImage: boolean;
 
     imageWidth: number = 50;
     imageMargin: number = 2;
     errorMessage: string;
 
+    private _listFilter: string
+
+    get listFilter(): string {
+      return this._listFilter
+    }
+
+    set listFilter(value: string) {
+      this._listFilter = value
+      this.performFilter(this.listFilter)
+    }
+
+
     filteredProducts: IProduct[];
     products: IProduct[];
+
 
     constructor(private productService: ProductService) { }
 
@@ -34,6 +47,7 @@ export class ProductListComponent implements OnInit {
     toggleImage(): void {
         this.showImage = !this.showImage;
     }
+
 
     performFilter(filterBy?: string): void {
         if (filterBy) {
