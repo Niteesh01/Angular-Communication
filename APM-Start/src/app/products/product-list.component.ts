@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angula
 
 import { IProduct } from './product';
 import { ProductService } from './product.service';
+import { NgModel } from '@angular/forms';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
     templateUrl: './product-list.component.html',
@@ -12,24 +14,13 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     pageTitle: string = 'Product List';
 
     @ViewChild('filterElement') filterElementRef: ElementRef
-
+    @ViewChild(NgModel) filterInput:NgModel
     showImage: boolean;
-
+    listFilter: string;
     imageWidth: number = 50;
     imageMargin: number = 2;
     errorMessage: string;
 
-
-    private _listFilter: string
-
-    get listFilter(): string {
-      return this._listFilter
-    }
-
-    set listFilter(value: string) {
-      this._listFilter = value
-      this.performFilter(this.listFilter)
-    }
 
 
     filteredProducts: IProduct[];
@@ -40,6 +31,9 @@ export class ProductListComponent implements OnInit, AfterViewInit {
 
     ngAfterViewInit(): void {
       this.filterElementRef.nativeElement.focus()
+      this.filterInput.valueChanges.subscribe(
+        () => this.performFilter(this.listFilter)
+      )
     }
     ngOnInit(): void {
         this.productService.getProducts().subscribe(
