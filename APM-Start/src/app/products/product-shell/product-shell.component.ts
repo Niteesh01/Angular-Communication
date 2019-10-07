@@ -34,5 +34,4 @@ export class ProductShellComponent implements OnInit, OnDestroy {
     }
 
 
-
 }

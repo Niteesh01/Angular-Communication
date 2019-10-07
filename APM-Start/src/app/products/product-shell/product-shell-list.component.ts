@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs/Subscription';
   selector: 'pm-product-shell-list',
   templateUrl: './product-shell-list.component.html'
 })
-export class ProductShellListComponent implements OnInit, OnDestroy {
+export class ProductShellListComponent implements OnInit,OnDestroy{
 
   pageTitle: string = 'Products';
   errorMessage: string;
