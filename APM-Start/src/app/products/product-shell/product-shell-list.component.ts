@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: './product-shell-list.component.html'
 })
 export class ProductShellListComponent implements OnInit, OnDestroy {
+
   pageTitle: string = 'Products';
   errorMessage: string;
   products: IProduct[];
@@ -18,7 +19,7 @@ export class ProductShellListComponent implements OnInit, OnDestroy {
   constructor(private productService: ProductService) { }
 
   ngOnInit(): void {
-    this.productService.selectedProductChanges$.subscribe(selectedProduct => this.selectedProduct = selectedProduct)
+    this.sub = this.productService.selectedProductChanges$.subscribe(selectedProduct => this.selectedProduct = selectedProduct)
 
     this.productService.getProducts().subscribe(
       (products: IProduct[]) => {
@@ -31,6 +32,7 @@ export class ProductShellListComponent implements OnInit, OnDestroy {
   onSelected(product: IProduct): void{
     this.productService.changeSelectedProduct(product)
   }
+
 
   ngOnDestroy(): void {
     this.sub.unsubscribe()
