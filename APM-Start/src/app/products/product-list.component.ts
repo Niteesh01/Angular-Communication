@@ -1,3 +1,4 @@
+import { ProductParameterService } from './product-parameter.service';
 import { CriteriaComponent } from './../shared/criteria/criteria.component';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 
@@ -13,7 +14,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
 
 
     pageTitle: string = 'Product List';
-    showImage: boolean;
+
     includeDetail: boolean = true
 
     imageWidth: number = 50;
@@ -25,8 +26,15 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     filteredProducts: IProduct[];
     products: IProduct[];
 
+    get showImage(): boolean{
+      return this.productParameterService.showImage
+    }
 
-    constructor(private productService: ProductService) { }
+    set showImage(value: boolean){
+      this.productParameterService.showImage = value
+    }
+
+    constructor(private productService: ProductService, private  productParameterService: ProductParameterService) { }
 
     ngAfterViewInit(): void {
       this.parentListFilter = this.filterComponent.listFilter
@@ -35,13 +43,16 @@ export class ProductListComponent implements OnInit, AfterViewInit {
         this.productService.getProducts().subscribe(
             (products: IProduct[]) => {
                 this.products = products;
-                this.performFilter(this.parentListFilter);
+                this.filterComponent.listFilter = this.productParameterService.filterBy
             },
             (error: any) => this.errorMessage = <any>error
         );
     }
 
+
+
     onValueChange(value: string): void{
+      this.productParameterService.filterBy = value
       this.performFilter(value)
     }
 
